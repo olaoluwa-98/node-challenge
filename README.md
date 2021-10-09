@@ -8,51 +8,18 @@ This challenge has been designed to measure your knowledge of Node.js, Express, 
 
 Your objective is to write this new route to fetch the list of expenses for a given user. Right now that domain is empty, so you'll have to build everything from scratch- but you can look over at the user domain for inspiration. Additionally, we would also like you to write some tests for your route.
 
-Finally, as a bonus objective, try to improve any aspect of this API. It could be to add more TS types, tests, add features, graphql support, etc. 
+Finally, as a bonus objective, try to improve any aspect of this API. It could be to add more TS types, tests, add features, graphql support, etc.
 
-## Instructions
+## My Thought Process
 
-Fork this repo with your solution. Ideally, we'd like to see your progression through commits, and don't forget to update the README.md to explain your thought process.
+Here's a chronological order in which I worked on this challenge.
 
-Please let us know how long the challenge takes you. We're not looking for how speedy or lengthy you are. It's just really to give us a clearer idea of what you've produced in the time you decided to take. Feel free to go as big or as small as you want.
-
-## Install
-
-Make sure that you have a modern version of `yarn` that supports workspaces (`>= 1.0`), then run:
-
-```bash
-yarn
-```
-
-You will also need to [install Postgres](https://www.postgresqltutorial.com/install-postgresql-macos/), create a `challenge` database and load the sql file `dump.sql`:
-
-```bash
-psql challenge < dump.sql
-```
-
-## Start
-
-To enable logs, use the standard `NODE_DEBUG` flag with the value `DEBUG`
-
-```bash
-NODE_DEBUG=DEBUG yarn start
-```
-
-## Test
-
-Make sure that you have a modern version of `yarn` that supports workspaces, then run:
-
-```bash
-yarn test
-```
-
-The command above will run the following test suites sequentially:
-
-| Test suite | Run command | Description |
--------------|-------------|-------------|
-| Unit | `yarn test:unit` | Simple unit tests. |
-| Mid-level | `yarn test:mid-level` | Small integration tests that integration of small components together.  |
-| Acceptances | `yarn test:acceptance` | Large integration tests, system tests, end-to-end tests. |
-
-
-Happy hacking 😁!
+- I started by inspecting the sql dump file to know what the tables look like. I first noticed there was no primary key so I added that in the dump file.
+- I proceeded to validate uuid so instead of returning a db error, the client can be told to use a valid uuid which would be a better experience
+- I moved a utility function (to utils domain) that would otherwise be duplicated in user and expense domains
+- I setup models, formatter & types for expense domain based on the already existing structure in user domain to maintain consistency
+- I setup the route for the expenses domain
+- Upon running tests, there was a bug in `config-injector` so I removed the line causing it
+- I setup utility functions for testing the user and expense domains. These required creating/destroying table/data
+- I wrote test that handles success, error and empty states for the user and domain routes
+- I corrected some typos I came across in the root test folder
