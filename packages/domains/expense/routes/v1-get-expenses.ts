@@ -1,4 +1,5 @@
-import { getUserDetails } from '../model';
+import { getExpensesByUserId } from '../model';
+import { getUserDetails } from '@nc/domain-user/model';
 import { Router } from 'express';
 import { secureTrim } from '../formatter';
 import { to } from '@nc/utils/async';
@@ -7,7 +8,7 @@ import { ApiError, BadRequest } from '@nc/utils/errors';
 
 export const router = Router();
 
-router.get('/get-user-details', async (req, res, next) => {
+router.get('/get-user-expenses', async (req, res, next) => {
   const userId = req.query?.userId;
 
   if (!userId || !validate(userId)) {
@@ -16,13 +17,15 @@ router.get('/get-user-details', async (req, res, next) => {
 
   const [userError, userDetails] = await to(getUserDetails(userId));
 
-  if (userError) {
+  if (userError || !userDetails) {
     return next(new ApiError(userError, userError.status, `Could not get user details: ${userError}`, userError.title, req));
   }
 
-  if (!userDetails) {
-    return res.json({});
+  const [expensesError, expenses] = await to(getExpensesByUserId(userDetails.id));
+
+  if (expensesError) {
+    return next(new ApiError(expensesError, expensesError.status, `Could not get expenses: ${expensesError}`, expensesError.title, req));
   }
 
-  return res.json(JSON.parse(secureTrim(userDetails)));
+  return res.json(expenses.map((expense) => JSON.parse(secureTrim(expense))));
 });

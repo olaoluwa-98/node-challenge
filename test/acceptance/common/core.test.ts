@@ -1,7 +1,7 @@
 import { Api } from '../utils/api';
 
 describe('Given that we have a healthy service', () => {
-  describe('Healtcheck', () => {
+  describe('Healthcheck', () => {
     test('Healthcheck route should return positively', (done) => {
       Api.get('/healthcheck')
         .expect(200, done);
