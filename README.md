@@ -14,7 +14,7 @@ Finally, as a bonus objective, try to improve any aspect of this API. It could b
 
 Here's a chronological order in which I worked on this challenge.
 
-- I started by inspecting the sql dump file to know what the tables look like. I first noticed there was no primary key so I added that in the dump file.
+- I started by inspecting the sql dump file to know what the tables look like. I first noticed there was no primary key so I added that in the dump file
 - I proceeded to validate uuid so instead of returning a db error, the client can be told to use a valid uuid which would be a better experience
 - I moved a utility function (to utils domain) that would otherwise be duplicated in user and expense domains
 - I setup models, formatter & types for expense domain based on the already existing structure in user domain to maintain consistency
